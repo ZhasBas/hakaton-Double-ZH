@@ -113,7 +113,7 @@ button {
 
     <!-- Header -->
     <div class="header">
-        <h1>User Profile</h1>
+        <h1>FaceBook</h1>
     </div>
 
     <!-- Main content -->
@@ -202,8 +202,8 @@ button {
 
             <!-- Buttons: Save and Logout -->
             <div class="button-container">
-                <button type="button" class="save-btn">Save Changes</button>
-                <button class="logout-btn">Logout</button>
+                <button type="button" id='save' class="save-btn">Save Changes</button>
+                <button id="logout" class="logout-btn">Logout</button>
             </div>
 
             <!-- Switch to chat page -->
@@ -213,6 +213,28 @@ button {
     </main>
 
     <script>
+        let age = document.getElementById('age');
+        let job = document.getElementById('job');
+        let sex = document.getElementById('sex');
+        let housing = document.getElementById('housing');
+        document.getElementById('save').addEventListener('click',()=>{
+            fetch("", {
+                headers: headers,
+                body: JSON.stringify({'username': username.value, 'email': email.value, 'password': password1.value}),
+                method: "POST",
+            }).then((response)=>{
+                window.location.href = "http://127.0.0.1:8000/profile/";
+            })  
+        })
+        document.getElementById('logout').addEventListener('click',()=>{
+            fetch("", {
+                headers: headers,
+                body: JSON.stringify({'username': username.value, 'email': email.value, 'password': password1.value}),
+                method: "POST",
+            }).then((response)=>{
+                window.location.href = "http://127.0.0.1:8000/profile/";
+            })  
+        })
         // Function to switch to chat page (dummy function for now)
         function switchToChat() {
             window.location.href = "http://127.0.0.1:8000/";
