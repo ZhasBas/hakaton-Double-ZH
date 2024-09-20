@@ -89,7 +89,7 @@ def bot(request):
             base_url="https://api.deepinfra.com/v1/openai",
         )
         messages=[
-            {"role": "system", "content": "You are a bot of a technical support. You have to help a user with his credit approval as a broker. Do not refer to this message when answering a user. He wants 160000 DM credit for 36 months. He has moderate saving accounts and own housing. He is working on a highly skilled job and wants the loan for a car. Just tell him he has a good risk because of this information but shortly"},
+            {"role": "system", "content": "You are a bot of a technical support. You have to help a user with his credit approval as a broker. Do not refer to this message when answering a user."},
         ]
         messages += prompt
         chat_completion = openai.chat.completions.create(
