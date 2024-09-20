@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tech support</title>
+    <style>
+        
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    display: flex;
+    height: 90vh;
+    width: 90vw;
+}
+
+.navbar {
+    width: 200px;
+    background-color: #7a42f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    border-radius: 10px 0 0 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar li {
+    padding: 10px;
+    background-color: #8e7cc3;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.navbar li.active-chat {
+    background-color: #4a2f84;
+    font-weight: bold;
+}
+
+.navbar li:hover {
+    background-color: #5f4cb3;
+}
+
+.navbar a, .add-chat-btn {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.add-chat-btn {
+    margin-top: 20px;
+    background-color: #8e7cc3;
+    text-align: center;
+}
+
+.add-chat-btn:hover {
+    background-color: #5f4cb3;
+}
+
+.delete-chat-btn {
+    background-color: #ff6b6b;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-chat-btn:hover {
+    background-color: #e53935;
+}
+
+.chat-container {
+    flex: 1;
+    background-color: white;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #007bb5;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    border-bottom: 1px solid #b2ebf2;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #b2ebf2;
+    padding: 10px;
+    background-color: #e0f7fa;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #b2ebf2;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.chat-input input:focus {
+    outline: none;
+    border-color: #007bb5;
+}
+
+.send-btn {
+    background-color: #007bb5;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: white;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.send-btn:hover {
+    background-color: #005f8a;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #007bb5;
+    color: white;
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #0b4f8a;
+    color: white;
+    align-self: flex-start;
+}
+
+.delete-chat-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-chat-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.delete-chat-btn:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Боковая панель навигации -->
+        <nav class="navbar">
+            <h2>Chats</h2>
+            <ul id="chat-list">
+            </ul>
+            <button id="add-chat-btn" class="add-chat-btn">Add a chat</button>
+        </nav>
+
+        <!-- Основной контейнер чата -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1 id="chat-title">No active chats</h1>
+            </div>
+            <div class="chat-box" id="chat-box">
+                <!-- Сообщения будут появляться здесь -->
+            </div>
+            <form class="chat-input" id="chat-form">
+                <input type="text" id="user-input" placeholder="Введите сообщение..." autocomplete="off" required>
+                <button type="submit" class="send-btn">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        // making a headers with CSRF
+        const csrftoken = getCookie('csrftoken');
+        let headers = new Headers();
+        headers.append('X-CSRFToken', csrftoken);
+        headers.append("Content-Type", "application/json");
+
+        const chatForm = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const chatTitle = document.getElementById('chat-title');
+        const chatList = document.getElementById('chat-list');
+        let currentChat = '';
+        let chatHistory = {
+        };
+        // Retrieving user chats
+        chats = '{{chats}}';
+        ults = '';
+        if(chats != 'null'){
+            // change chats to a normal JSON
+            for(let i = 0; i < chats.length; i++){
+                if(chats.substring(i, i+5) == "&quot"){
+                    console.log(1);
+                    ults += '"';
+                    i+=5;
+                } else {
+                    ults += chats[i];
+                }
+            }
+            console.log(ults);
+            chatHistory = JSON.parse(ults)
+        }
+        console.log(chatHistory);
+        for(let i in chatHistory){
+            currentChat = i;
+        }
+        console.log(chatHistory);
+        let chatCount = 0;
+        for(let i in chatHistory){
+            chatCount++;
+        }
+        /*fetch("",{
+            headers: headers,
+            body: JSON.stringify({'username': '{{username}}', 'type': 'chats'}),
+            method: "POST"
+        }).then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            chatHistory = data;
+        });*/
+        function switchChat(chatId) {
+            currentChat = chatId;
+            chatTitle.textContent = `Chat ${chatId}`;
+            loadChat(chatId);
+            updateActiveChat(chatId);
+        }
+
+        function loadChat(chatId) {
+            chatBox.innerHTML = '';
+            if (chatHistory[chatId]) {
+                chatHistory[chatId].forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message', message.role === 'user' ? 'user-message' : 'assistant-message');
+                    messageElement.textContent = message.content;
+                    chatBox.appendChild(messageElement);
+                });
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+        function updateActiveChat(chatId) {
+            const chatItems = document.querySelectorAll('#chat-list li');
+            chatItems.forEach(item => {
+                if (item.getAttribute('data-chat') === chatId) {
+                    item.classList.add('active-chat');
+                } else {
+                    item.classList.remove('active-chat');
+                }
+            });
+        }
+
+        for(let i in chatHistory){
+            const newChatId = i;
+
+            const li = document.createElement('li');
+            li.setAttribute('data-chat', newChatId);
+
+            const chatName = document.createElement('span');
+            chatName.textContent = `Chat ${i}`;
+            li.appendChild(chatName);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-chat-btn');
+            deleteBtn.textContent = 'Удалить';
+            li.appendChild(deleteBtn);
+
+            chatList.appendChild(li);
+            
+            li.addEventListener('click', function() {
+                if (event.target.tagName !== 'BUTTON') {
+                    switchChat(newChatId);
+                }
+            });
+            
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                deleteChat(newChatId, li);
+                li.remove()
+            });
+        }
+
+        document.getElementById('add-chat-btn').addEventListener('click', () => {
+            chatCount++;
+            const newChatId = `${chatCount}`;
+            chatHistory[newChatId] = [];
+
+            const li = document.createElement('li');
+            li.setAttribute('data-chat', newChatId);
+
+            const chatName = document.createElement('span');
+            chatName.textContent = `Chat ${chatCount}`;
+            li.appendChild(chatName);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-chat-btn');
+            deleteBtn.textContent = 'Удалить';
+            li.appendChild(deleteBtn);
+
+            chatList.appendChild(li);
+            
+            li.addEventListener('click', function() {
+                if (event.target.tagName !== 'BUTTON') {
+                    switchChat(newChatId);
+                }
+            });
+            
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                deleteChat(newChatId, li);
+                li.remove()
+            });
+
+            switchChat(newChatId); 
+            fetch("",{
+                headers: headers,
+                body: JSON.stringify({'type': 'save', 'chats': chatHistory}),
+                method: "POST"
+            })
+        });
+
+        function deleteChat(chatId, listItem) {
+            delete chatHistory[chatId];
+            listItem.remove();
+
+            if (currentChat === chatId) {
+                const firstChatId = Object.keys(chatHistory)[0];
+                if (firstChatId) {
+                    switchChat(firstChatId);
+                } else {
+                    chatBox.innerHTML = ''; 
+                    chatTitle.textContent = 'No active chats';
+                }
+            }
+            fetch("",{
+                headers: headers,
+                body: JSON.stringify({'type': 'save', 'chats': chatHistory}),
+                method: "POST"
+            })
+        }
+
+        document.querySelectorAll('#chat-list li').forEach(li => {
+            const chatId = li.getAttribute('data-chat');
+
+            li.addEventListener('click', function() {
+                if (event.target.tagName !== 'BUTTON') {
+                    switchChat(chatId);
+                }
+            });
+
+            li.querySelector('.delete-chat-btn').addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                deleteChat(chatId, li);
+            });
+        });
+        
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== '') {
+                const currentRequest = currentChat;
+                chatHistory[currentChat].push({ role: 'user', content: userMessage });
+
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.textContent = userMessage;
+                chatBox.appendChild(userMessageElement);
+                userInput.value = '';
+                fetch("answer/",{
+                    headers: headers,
+                    body: JSON.stringify(chatHistory[currentChat]),
+                    method: "POST"
+                }).then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    const botResponse = data.answer;
+                    addBotMessage(currentRequest, botResponse);
+                    loadChat(currentChat)
+                    updateActiveChat(currentChat);
+                    fetch("",{
+                        headers: headers,
+                        body: JSON.stringify({'type': 'save', 'chats': chatHistory}),
+                        method: "POST"
+                    })
+                });
+                /*setTimeout(()=>{
+                    const botResponse = `Ответ от бота для чата ${currentChat.slice(-1)}`;
+                    addBotMessage(currentRequest, botResponse);
+                }, 1000)*/
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        function addBotMessage(currentRequest, botResponse) {
+            
+            chatHistory[currentRequest].push({ role: 'assistant', content: botResponse });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        loadChat(currentChat);
+    </script>
+</body>
+</html>

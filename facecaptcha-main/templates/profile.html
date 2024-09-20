@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    padding: 20px;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bb5;
+    padding: 10px 20px;
+    color: white;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+main {
+    margin-top: 40px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Расстояние между полями */
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label {
+    color: #007bb5;
+    font-weight: bold;
+    width: 40%;
+}
+
+input, select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    width: 48%;
+}
+
+.save-btn {
+    background-color: #007bb5;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #005f8a;
+}
+
+.switch-btn {
+    background-color: #007bb5;
+    color: white;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.switch-btn:hover {
+    background-color: #005f8a;
+}
+
+.logout-btn {
+    background-color: #f28b82; /* Мягкий красный цвет */
+    color: white;
+}
+
+.logout-btn:hover {
+    background-color: #e57373; /* Немного темнее при наведении */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+</style>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>User Profile</h1>
+    </div>
+
+    <!-- Main content -->
+    <main>
+        <form class="profile-form">
+
+            <!-- Age -->
+            <div class="data-row">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="30">
+            </div>
+
+            <!-- Sex -->
+            <div class="data-row">
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+
+            <!-- Job -->
+            <div class="data-row">
+                <label for="job">Job:</label>
+                <select id="job" name="job">
+                    <option value="0">Unskilled and non-resident</option>
+                    <option value="1">Unskilled and resident</option>
+                    <option value="2">Skilled</option>
+                    <option value="3">Highly skilled</option>
+                </select>
+            </div>
+
+            <!-- Housing -->
+            <div class="data-row">
+                <label for="housing">Housing:</label>
+                <select id="housing" name="housing">
+                    <option value="own">Own</option>
+                    <option value="rent">Rent</option>
+                    <option value="free">Free</option>
+                </select>
+            </div>
+
+            <!-- Saving accounts -->
+            <div class="data-row">
+                <label for="saving">Saving accounts:</label>
+                <select id="saving" name="saving">
+                    <option value="little">Little</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="quite rich">Quite rich</option>
+                    <option value="rich">Rich</option>
+                </select>
+            </div>
+
+            <!-- Checking account -->
+            <div class="data-row">
+                <label for="checking">Checking account (DM):</label>
+                <input type="number" id="checking" name="checking" value="5000">
+            </div>
+
+            <!-- Credit amount -->
+            <div class="data-row">
+                <label for="credit">Credit amount (DM):</label>
+                <input type="number" id="credit" name="credit" value="10000">
+            </div>
+
+            <!-- Duration -->
+            <div class="data-row">
+                <label for="duration">Duration (months):</label>
+                <input type="number" id="duration" name="duration" value="36">
+            </div>
+
+            <!-- Purpose -->
+            <div class="data-row">
+                <label for="purpose">Purpose:</label>
+                <select id="purpose" name="purpose">
+                    <option value="car">Car</option>
+                    <option value="furniture/equipment">Furniture/Equipment</option>
+                    <option value="radio/TV">Radio/TV</option>
+                    <option value="domestic appliances">Domestic appliances</option>
+                    <option value="repairs">Repairs</option>
+                    <option value="education">Education</option>
+                    <option value="business">Business</option>
+                    <option value="vacation/others">Vacation/Others</option>
+                </select>
+            </div>
+
+            <!-- Buttons: Save and Logout -->
+            <div class="button-container">
+                <button type="button" class="save-btn">Save Changes</button>
+                <button class="logout-btn">Logout</button>
+            </div>
+
+            <!-- Switch to chat page -->
+            <button type="button" class="switch-btn" onclick="switchToChat()">Go to Chat</button>
+
+        </form>
+    </main>
+
+    <script>
+        // Function to switch to chat page (dummy function for now)
+        function switchToChat() {
+            window.location.href = "http://127.0.0.1:8000/";
+        }
+    </script>
+
+</body>
+</html>

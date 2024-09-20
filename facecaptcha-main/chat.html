@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Чат с ботом</title>
+    <link rel="stylesheet" href="chat-style.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Боковая панель навигации -->
+        <nav class="navbar">
+            <h2>Чаты</h2>
+            <ul id="chat-list">
+                <li class="active-chat" data-chat="chat1">
+                    <span>Чат 1</span>
+                    <button class="delete-chat-btn">Удалить</button>
+                </li>
+                <li data-chat="chat2">
+                    <span>Чат 2</span>
+                    <button class="delete-chat-btn">Удалить</button>
+                </li>
+                <li data-chat="chat3">
+                    <span>Чат 3</span>
+                    <button class="delete-chat-btn">Удалить</button>
+                </li>
+                <li data-chat="chat4">
+                    <span>Чат 4</span>
+                    <button class="delete-chat-btn">Удалить</button>
+                </li>
+            </ul>
+            <button id="add-chat-btn" class="add-chat-btn">Добавить чат</button>
+        </nav>
+
+        <!-- Основной контейнер чата -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1 id="chat-title">Чат с ботом 1</h1>
+            </div>
+            <div class="chat-box" id="chat-box">
+                <!-- Сообщения будут появляться здесь -->
+            </div>
+            <form class="chat-input" id="chat-form">
+                <input type="text" id="user-input" placeholder="Введите сообщение..." autocomplete="off" required>
+                <button type="submit" class="send-btn">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const chatTitle = document.getElementById('chat-title');
+        const chatList = document.getElementById('chat-list');
+        let currentChat = 'chat1';
+        let chatCount = 4;
+
+        const chatHistory = {
+            chat1: [],
+            chat2: [],
+            chat3: [],
+            chat4: []
+        };
+
+        function switchChat(chatId) {
+            currentChat = chatId;
+            const chatNumber = chatId.slice(-1);
+            chatTitle.textContent = `Чат с ботом ${chatNumber}`;
+            loadChat(chatId);
+            updateActiveChat(chatId);
+        }
+
+        function loadChat(chatId) {
+            chatBox.innerHTML = '';
+            if (chatHistory[chatId]) {
+                chatHistory[chatId].forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message', message.sender === 'user' ? 'user-message' : 'bot-message');
+                    messageElement.textContent = message.text;
+                    chatBox.appendChild(messageElement);
+                });
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+        function updateActiveChat(chatId) {
+            const chatItems = document.querySelectorAll('#chat-list li');
+            chatItems.forEach(item => {
+                if (item.getAttribute('data-chat') === chatId) {
+                    item.classList.add('active-chat');
+                } else {
+                    item.classList.remove('active-chat');
+                }
+            });
+        }
+
+        //
+        document.getElementById('add-chat-btn').addEventListener('click', () => {
+            chatCount++;
+            const newChatId = `chat${chatCount}`;
+            chatHistory[newChatId] = [];
+
+            const li = document.createElement('li');
+            li.setAttribute('data-chat', newChatId);
+
+            const chatName = document.createElement('span');
+            chatName.textContent = `Чат ${chatCount}`;
+            li.appendChild(chatName);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-chat-btn');
+            deleteBtn.textContent = 'Удалить';
+            li.appendChild(deleteBtn);
+
+            chatList.appendChild(li);
+            
+            li.addEventListener('click', function() {
+                if (event.target.tagName !== 'BUTTON') {
+                    switchChat(newChatId);
+                }
+            });
+            
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();  т
+                deleteChat(newChatId, li);
+            });
+
+            switchChat(newChatId); 
+        });
+
+        function deleteChat(chatId, listItem) {
+            delete chatHistory[chatId];
+            listItem.remove();
+
+            if (currentChat === chatId) {
+                const firstChatId = Object.keys(chatHistory)[0];
+                if (firstChatId) {
+                    switchChat(firstChatId);
+                } else {
+                    chatBox.innerHTML = ''; 
+                    chatTitle.textContent = 'Нет активного чата';
+                }
+            }
+        }
+
+        document.querySelectorAll('#chat-list li').forEach(li => {
+            const chatId = li.getAttribute('data-chat');
+
+            li.addEventListener('click', function() {
+                if (event.target.tagName !== 'BUTTON') {
+                    switchChat(chatId);
+                }
+            });
+
+            li.querySelector('.delete-chat-btn').addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                deleteChat(chatId, li);
+            });
+        });
+
+        
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== '') {
+                chatHistory[currentChat].push({ sender: 'user', text: userMessage });
+
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.textContent = userMessage;
+                chatBox.appendChild(userMessageElement);
+                userInput.value = '';
+
+
+                setTimeout(() => {
+                    const botResponse = `Ответ от бота для чата ${currentChat.slice(-1)}`;
+                    addBotMessage(botResponse);
+                }, 1000);
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        function addBotMessage(botResponse) {
+            
+            chatHistory[currentChat].push({ sender: 'bot', text: botResponse });
+
+
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('message', 'bot-message');
+            botMessageElement.textContent = botResponse;
+
+
+            chatBox.appendChild(botMessageElement);
+
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+        loadChat(currentChat);
+    </script>
+</body>
+</html>

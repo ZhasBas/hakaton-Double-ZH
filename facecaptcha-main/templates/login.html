@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Вход</title>
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.registration-container,
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.registration-container:hover,
+.login-container:hover {
+    transform: scale(1.05);
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #007bb5;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #b2ebf2;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #e0f7fa;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #007bb5;
+    outline: none;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bb5;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #005f8a;
+}
+
+p {
+    margin-top: 15px;
+    color: #333;
+}
+
+a {
+    color: #007bb5;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #005f8a;
+    text-decoration: underline;
+}
+</style>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-btn" id="btn">Login</button>
+        </form>
+        <p>Don't have an account? <a href="http://127.0.0.1:8000/register/">Register</a></p>
+    </div>
+</body>
+<script>
+    const username = document.getElementById('username');
+    const password1 = document.getElementById('password');
+    const button = document.getElementById('btn');
+    const csrftoken = getCookie('csrftoken');
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    let headers = new Headers();
+    headers.append('X-CSRFToken', csrftoken);
+    headers.append("Content-Type", "application/json");
+    button.addEventListener('click',()=>{
+        fetch("", {
+            headers: headers,
+            body: JSON.stringify({'username': username.value, 'password': password1.value}),
+            method: "POST",
+        }).then((response)=>{
+            window.location.href = "http://127.0.0.1:8000/profile/";
+        })
+    })
+</script>
+</html>

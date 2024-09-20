@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Profile</title>
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.profile-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-height: 90vh; /* Ограничиваем высоту контейнера */
+    overflow-y: auto; /* Добавляем скролл, если содержимое превышает высоту контейнера */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #007bb5;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    color: #007bb5;
+    margin-bottom: 5px;
+}
+
+input, select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #b2ebf2;
+    border-radius: 5px;
+    background-color: #f0f8ff;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #007bb5;
+}
+
+.submit-btn {
+    background-color: #007bb5;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.submit-btn:hover {
+    background-color: #005f8a;
+}
+
+.switch-btn {
+    background-color: #007bb5;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.switch-btn:hover {
+    background-color: #005f8a;
+}
+
+input[type="number"] {
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+</style>
+<body>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <form id="user-profile-form">
+            <div class="form-group">
+                <label for="age">Возраст:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Пол:</label>
+                <select id="gender" name="gender" required>
+                    <option value="мужской">Man</option>
+                    <option value="женский">Woman</option>
+                    <option value="другое">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="job">Job:</label>
+                <input type="text" id="job" name="job" required>
+            </div>
+
+            <div class="form-group">
+                <label for="housing">Housing:</label>
+                <input type="text" id="housing" name="housing" required>
+            </div>
+
+            <div class="form-group">
+                <label for="savings">Savings:</label>
+                <input type="number" id="savings" name="savings" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bank-account">Bank Account:</label>
+                <input type="text" id="bank-account" name="bank-account" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loan-amount">Loan Amount:</label>
+                <input type="number" id="loan-amount" name="loan-amount" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loan-duration">Loan Duration (Months):</label>
+                <input type="number" id="loan-duration" name="loan-duration" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loan-reason">Purpose:</label>
+                <input type="text" id="loan-reason" name="loan-reason" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Save</button>
+        </form>
+
+        <button id="switch-to-chat-btn" class="switch-btn">Chat</button>
+    </div>
+
+    <script>
+        document.getElementById('switch-to-chat-btn').addEventListener('click', () => {
+            location.href = '127.0.0.1:8000';
+        });
+    </script>
+</body>
+</html>
